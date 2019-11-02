@@ -1,5 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+api_project/__pycache__
+api_server/__pycache__
 *.py[cod]
 *$py.class
 
@@ -55,6 +57,8 @@ coverage.xml
 *.log
 local_settings.py
 db.sqlite3
+db.sqlite3-journal
+api_server/migrations
 
 # Flask stuff:
 instance/
@@ -102,3 +106,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Keys that we don't want to get leaked
+api_project/secret_key.txt
+
+# VS Code
+.vscode/
