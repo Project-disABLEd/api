@@ -1,4 +1,4 @@
-#Short installation guide
+# Short installation guide
 
 ## First, install Python from https://www.python.org/downloads/
 Our server software requires:
@@ -9,15 +9,15 @@ We **highly recommend** and only officially support the latest patch release of 
 ## Create a virtual environment to isolate our package dependencies locally
 ```
 python3 -m venv env
-source env/bin/activate  # On Windows use 'env\Scripts\activate'```
-
+source env/bin/activate  # On Windows use 'env\Scripts\activate'
+```
 ## Install Django and Django REST framework into the virtual environment via pip
 ```
 pip install django
 pip install djangorestframework
 pip install markdown       # Markdown support for the browsable API.
-pip install django-filter  # Filtering support```
-
+pip install django-filter  # Filtering support
+```
 ## Generate a new private key, and put it in ./api_project/secret_key.txt
 ```
 django-admin shell
