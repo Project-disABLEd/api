@@ -2,4 +2,4 @@
 
 WIP
 
-For an installing guide, check out [this link](../INSTALL.md)
+For an installing guide, check out [this link](./INSTALL.md)
