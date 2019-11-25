@@ -19,14 +19,6 @@ pip install djangorestframework
 pip install markdown       # Markdown support for the browsable API.
 pip install django-filter  # Filtering support
 ```
-## Generate a new private key, and put it in ./api_project/secret_key.txt
-```
-django-admin shell
->>> from django.core.management.utils import get_random_secret_key
->>> get_random_secret_key()
-'[GENERATED KEY]'
->>>
-```
 ## We'll also need to create an initial migration for our model, and sync the database for the first time.
 ```
 python manage.py makemigrations api_server
