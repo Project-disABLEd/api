@@ -443,3 +443,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# VS PyProject/solution files
+*.pyproj
+*.sln
