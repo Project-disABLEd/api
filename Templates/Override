@@ -1,0 +1,8 @@
+body {
+    font-family: 'Lato', sans-serif;
+}
+
+.base{
+	letter-spacing: 10px;
+	color: #00a7ff !important;
+}
