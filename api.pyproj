@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{82bf321f-2d66-41ab-a858-c615cdc4fc1f}</ProjectGuid>
+    <ProjectGuid>{4489f40d-7a1d-41a5-8600-154f1e38d8f1}</ProjectGuid>
     <ProjectHome />
     <StartupFile>manage.py</StartupFile>
     <SearchPath />
@@ -14,15 +14,19 @@
     <InterpreterId />
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <DjangoSettingsModule>api_project.settings</DjangoSettingsModule>
-    <PythonDebugWebServerCommandArguments>runserver </PythonDebugWebServerCommandArguments>
-    <PythonRunWebServerCommandType />
-    <PythonDebugWebServerCommandType />
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
+    <Name>api</Name>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <PropertyGroup>
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="requirements.txt" />
+    <Content Include="Templates\Mapa.html" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="api_project\settings.py" />
     <Compile Include="api_project\urls.py" />
@@ -40,6 +44,7 @@
   <ItemGroup>
     <Folder Include="api_project" />
     <Folder Include="api_server" />
+    <Folder Include="Templates" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <ProjectExtensions>
