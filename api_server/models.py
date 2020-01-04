@@ -4,6 +4,7 @@ class Point(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     ID = models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)
     name = models.CharField(max_length=100, blank=True, default='')
+    source = models.TextField(max_length=100,default='')
     desc = models.TextField()
     site = models.TextField(default='')
     address = models.TextField()
