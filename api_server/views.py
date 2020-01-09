@@ -1,7 +1,6 @@
-from django.contrib.auth.models import User, Group
 from rest_framework import viewsets
 from api_server.models import Point
-from api_server.serializers import UserSerializer, GroupSerializer, PointSerializer
+from api_server.serializers import PointSerializer
 
 class PointViewSet(viewsets.ModelViewSet):
     """
