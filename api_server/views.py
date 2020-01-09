@@ -1,13 +1,8 @@
 from django.contrib.auth.models import User, Group
-from django import forms
 from rest_framework import viewsets
 from api_server.models import Point
-from django.shortcuts import render
 from api_server.serializers import UserSerializer, GroupSerializer, PointSerializer
 
-def map_view(*args, **kwargs):
-	print(args, kwargs)
-	return render(request, "mapa.html", {})
 
 class UserViewSet(viewsets.ModelViewSet):
     """
