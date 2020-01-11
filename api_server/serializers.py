@@ -6,6 +6,8 @@ class PointSerializer(serializers.ModelSerializer):
         model = Point
         ##fields = dir(Point)
         fields = [
+            'created',
+            'ID',
             'name',
 			'source',
             'desc',
