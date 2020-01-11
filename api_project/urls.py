@@ -4,6 +4,7 @@ from api_server import views
 
 router = routers.DefaultRouter()
 router.register(r'points', views.PointViewSet)
+router.register(r'TypeOfPoint', views.TypeOfPointViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.

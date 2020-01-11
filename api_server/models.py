@@ -30,5 +30,11 @@ class Point(models.Model):
     staff = models.IntegerField(blank=True, default='0')
     staff_desc = models.TextField()
 
+    typeObj = models.ForeignKey('TypeOfPoint', on_delete=models.CASCADE)
+
     class Meta:
         ordering = ['ID']
+        
+
+class TypeOfPoint(models.Model):
+    name=models.TextField()
