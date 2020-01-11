@@ -31,6 +31,9 @@
     <Compile Include="api_server\admin.py" />
     <Compile Include="api_server\apps.py" />
     <Compile Include="api_server\models.py" />
+    <Compile Include="api_server\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="api_server\serializers.py" />
     <Compile Include="api_server\tests.py" />
     <Compile Include="api_server\views.py" />
@@ -44,35 +47,35 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <ProjectExtensions>
     <VisualStudio>
-    <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-    <WebProjectProperties>
-        <AutoAssignPort>True</AutoAssignPort>
-        <UseCustomServer>True</UseCustomServer>
-        <CustomServerUrl>http://localhost</CustomServerUrl>
-        <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-    </WebProjectProperties>
-    </FlavorProperties>
-    <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
-    <WebProjectProperties>
-        <StartPageUrl>
-        </StartPageUrl>
-        <StartAction>CurrentPage</StartAction>
-        <AspNetDebugging>True</AspNetDebugging>
-        <SilverlightDebugging>False</SilverlightDebugging>
-        <NativeDebugging>False</NativeDebugging>
-        <SQLDebugging>False</SQLDebugging>
-        <ExternalProgram>
-        </ExternalProgram>
-        <StartExternalURL>
-        </StartExternalURL>
-        <StartCmdLineArguments>
-        </StartCmdLineArguments>
-        <StartWorkingDirectory>
-        </StartWorkingDirectory>
-        <EnableENC>False</EnableENC>
-        <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
-    </WebProjectProperties>
-    </FlavorProperties>
-</VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <AutoAssignPort>True</AutoAssignPort>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
   </ProjectExtensions>
 </Project>
