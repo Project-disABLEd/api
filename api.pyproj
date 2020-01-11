@@ -14,6 +14,8 @@
     <InterpreterId />
     <WebBrowserUrl>http://localhost</WebBrowserUrl>
     <DjangoSettingsModule>api_project.settings</DjangoSettingsModule>
+    <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
+    <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />

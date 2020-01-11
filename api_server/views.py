@@ -23,11 +23,9 @@ from rest_framework.response import Response
 
 class GetPoint(APIView):
     def get(self, request):
-        if request.method == 'POST':
-            serializer = PointViewSet(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.method == 'GET':
+            points = Point.objects.all()
+            serializer = PointViewSet(points)
+            return Response(serializer.data)
         else:
             return Response("no query")
