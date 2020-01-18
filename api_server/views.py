@@ -1,31 +1,56 @@
-from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from api_server.models import Point , TypeOfPoint
 from api_server.serializers import PointSerializer , TypeOfPointSerializer
 
+@api_view(['GET'])
 
-class PointViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = Point.objects.all().order_by('-ID')
-    serializer_class = PointSerializer
+def getByPos(request, format=None):
 
-class TypeOfPointViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows groups to be viewed or edited.
-    """
-    queryset = TypeOfPoint.objects.all()
-    serializer_class = TypeOfPointSerializer
+    if request.method == 'GET':
+        try:
+            x=request.GET['x']
+            y=request.GET['y']
 
-    
-from rest_framework.views import APIView
-from rest_framework.response import Response
+            points = Point.objects.get(latitude=x,longitude=y)
+        except Point.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
-class GetPoint(APIView):
-    def get(self, request):
-        if request.method == 'GET':
-            points = Point.objects.all()
-            serializer = PointViewSet(points)
-            return Response(serializer.data)
-        else:
-            return Response("no query")
+        content={
+            'id': points.pk,
+            'name': points.name,
+            'latitude': points.latitude,
+            'longitude': points.longitude
+            }
+        return Response(content)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+
+def getByID(request, pk, format=None):
+    if request.method == 'GET':
+        try:
+            points = Point.objects.get(pk=pk)
+        except Point.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PointSerializer(points)
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+
+def getTypeByID(request, pk, format=None):
+    if request.method == 'GET':
+        try:
+            type = TypeOfPoint.objects.get(pk=pk)
+        except TypeOfPoint.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = TypeOfPointSerializer(type)
+        return Response(serializer.data)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
