@@ -10,10 +10,28 @@ def getByPos(request, format=None):
 
     if request.method == 'GET':
         try:
-            x=request.GET['x']
-            y=request.GET['y']
+            x=request.GET.get('x')
+            y=request.GET.get('y')
+
+            # -------------if is no parameters trow all models------------------
+            if x==None and y==None:
+                try:
+                    points = Point.objects.all()
+                except Point.DoesNotExist:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
+                content={}
+                for p in points:
+                    content+={
+                        'id': p.pk,
+                        'name': p.name,
+                        'latitude': p.latitude,
+                        'longitude': p.longitude
+                        }
+                return Response(content)
+            #-------------------------------------------------------------------
 
             points = Point.objects.get(latitude=x,longitude=y)
+
         except Point.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
