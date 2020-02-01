@@ -103,9 +103,13 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-PASS_FILE = open("./api_project/pass.txt", "r")
-PASS = PASS_FILE.read()
-PASS_FILE.close()
+# Password for the DB, will set the password to None if there isn't a file already (for CircleCI tests)
+if os.path.exists("./api_project/secret_key.txt"): # Need more efficient method, ok for now. TODO
+    PASS_FILE = open("./api_project/pass.txt", "r")
+    PASS = PASS_FILE.read()
+    PASS_FILE.close()
+else:
+    PASS = None
 
 DATABASES = {
     'default': {
