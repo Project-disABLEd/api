@@ -73,7 +73,7 @@ jobs:
           name: Validate service is working
           command: |
             sleep 5
-            curl --retry 10 --retry-delay 1 -X POST --header "Content-Type: application/json" -d '{"name":"Test place", "desc": "Test desc" ,"address":"Test", "latitude": 0.000000, "longitude": 0.000000}' http://localhost:8080/points
+            curl --retry 10 --retry-delay 1 -X POST --header "Content-Type: application/json" -d '{"name":"Test place", "desc": "Test desc" ,"address":"Test", "latitude": 0.000000, "longitude": 0.000000}' http://localhost:8000/points
 
       # run tests!
       # this example uses Django's built-in test-runner
