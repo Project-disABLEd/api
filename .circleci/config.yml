@@ -64,7 +64,9 @@ jobs:
           name: Start service
           environment:
             CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
-          command: python manage.py runserver
+          command: |
+            . venv/bin/activate 
+            python manage.py runserver
           background: true
 
       - run:
