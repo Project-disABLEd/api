@@ -166,4 +166,5 @@ STATICFILES_DIRS = (
 
     )
 
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_project.settings")
 django_heroku.settings(locals())
