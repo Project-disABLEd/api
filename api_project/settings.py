@@ -185,5 +185,5 @@ LOGGING = {
 }
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_project.settings")
-settings.configure()
+
 django_heroku.settings(locals())
