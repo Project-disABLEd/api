@@ -34,6 +34,14 @@ else:
     SECRET_KEY = SECRET_KEY_FILE.read()
     SECRET_KEY_FILE.close()
 
+# secret key for token decode
+if os.path.exists("./api_project/secret_key_token.txt"): 
+    SECRET_KEY_TOKEN_FILE = open("./api_project/secret_key_token.txt", "r")
+    SECRET_KEY_TOKEN = SECRET_KEY_TOKEN_FILE.read()
+    SECRET_KEY_TOKEN_FILE.close()
+else:
+    print('ERROR: no secret_key_token.txt')
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

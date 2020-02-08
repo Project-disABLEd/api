@@ -16,6 +16,10 @@
     <DjangoSettingsModule>api_project.settings</DjangoSettingsModule>
     <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
     <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
+    <PythonDebugWebServerCommandArguments>runserver</PythonDebugWebServerCommandArguments>
+    <PythonRunWebServerCommandType />
+    <PythonDebugWebServerCommandType />
+    <PythonRunWebServerCommandArguments>runserver</PythonRunWebServerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -33,6 +37,9 @@
     <Compile Include="api_server\admin.py" />
     <Compile Include="api_server\apps.py" />
     <Compile Include="api_server\models.py" />
+    <Compile Include="api_server\permission.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="api_server\urls.py">
       <SubType>Code</SubType>
     </Compile>

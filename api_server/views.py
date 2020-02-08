@@ -1,11 +1,11 @@
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from api_server.models import Point , TypeOfPoint
 from api_server.serializers import PointSerializer , TypeOfPointSerializer
+from api_server.permission import canCreatePoint
 
 @api_view(['GET'])
-
 def getByPos(request, format=None):
 
     if request.method == 'GET':
@@ -42,11 +42,8 @@ def getByPos(request, format=None):
             'longitude': points.longitude
             }
         return Response(content)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-
 def getByID(request, pk, format=None):
     if request.method == 'GET':
         try:
@@ -72,3 +69,14 @@ def getTypeByID(request, pk, format=None):
         return Response(serializer.data)
     else:
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([canCreatePoint])
+def postPoint(request, format=None):
+
+    serializer =  PointSerializer(data=request.data, context={'request': request})
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
