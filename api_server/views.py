@@ -54,11 +54,23 @@ def getTypeByID(request, pk, format=None):
     return Response(serializer.data)
 
 
+
 @api_view(['POST'])
 @permission_classes([canCreatePoint])
 def postPoint(request, format=None):
 
     serializer =  PointSerializerDetail(data=request.data, context={'request': request})
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([canCreatePoint])
+def postType(request, format=None):
+
+    serializer =  TypeOfPointSerializer(data=request.data, context={'request': request})
 
     if serializer.is_valid():
         serializer.save()
