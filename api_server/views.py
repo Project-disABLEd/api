@@ -2,79 +2,63 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from api_server.models import Point , TypeOfPoint
-from api_server.serializers import PointSerializer , TypeOfPointSerializer
+from api_server.serializers import PointSerializerDetail , TypeOfPointSerializer, PointSerializer
 from api_server.permission import canCreatePoint
 
 @api_view(['GET'])
 def getByPos(request, format=None):
+    try:
+        x=request.GET.get('x')
+        y=request.GET.get('y')
 
-    if request.method == 'GET':
-        try:
-            x=request.GET.get('x')
-            y=request.GET.get('y')
+        # -------------if is no parameters trow all models------------------
+        if x==None and y==None:
+            try:
+                points = Point.objects.all()
+            except Point.DoesNotExist:
+                return Response(status=status.HTTP_404_NOT_FOUND)
 
-            # -------------if is no parameters trow all models------------------
-            if x==None and y==None:
-                try:
-                    points = Point.objects.all()
-                except Point.DoesNotExist:
-                    return Response(status=status.HTTP_404_NOT_FOUND)
-                content={}
-                for p in points:
-                    content+={
-                        'id': p.pk,
-                        'name': p.name,
-                        'latitude': p.latitude,
-                        'longitude': p.longitude
-                        }
-                return Response(content)
-            #-------------------------------------------------------------------
+            serializer = PointSerializer(points, many=True)
+                
+            return Response(serializer.data)
+        #-------------------------------------------------------------------
 
-            points = Point.objects.get(latitude=x,longitude=y)
+        points = Point.objects.get(latitude=x,longitude=y)
 
-        except Point.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+    except Point.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-        content={
-            'id': points.pk,
-            'name': points.name,
-            'latitude': points.latitude,
-            'longitude': points.longitude
-            }
-        return Response(content)
+    serializer = PointSerializer(points)
+
+    return Response(serializer.data)
 
 @api_view(['GET'])
 def getByID(request, pk, format=None):
-    if request.method == 'GET':
-        try:
-            points = Point.objects.get(pk=pk)
-        except Point.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+    try:
+        points = Point.objects.get(pk=pk)
+    except Point.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = PointSerializer(points)
-        return Response(serializer.data)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = PointSerializerDetail(points)
+    return Response(serializer.data)
+   
 
 @api_view(['GET'])
-
 def getTypeByID(request, pk, format=None):
-    if request.method == 'GET':
-        try:
-            type = TypeOfPoint.objects.get(pk=pk)
-        except TypeOfPoint.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+    try:
+        type = TypeOfPoint.objects.get(pk=pk)
+    except TypeOfPoint.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = TypeOfPointSerializer(type)
-        return Response(serializer.data)
-    else:
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    serializer = TypeOfPointSerializer(type)
+    return Response(serializer.data)
+
 
 @api_view(['POST'])
 @permission_classes([canCreatePoint])
 def postPoint(request, format=None):
 
-    serializer =  PointSerializer(data=request.data, context={'request': request})
+    serializer =  PointSerializerDetail(data=request.data, context={'request': request})
 
     if serializer.is_valid():
         serializer.save()
