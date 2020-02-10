@@ -5,6 +5,6 @@ urlpatterns = [
     path('points/', getByPos),
     path('points/add/', postPoint),
     path('points/<int:pk>/', getByID),
-    path('type-of-point/<int:pk>/', getTypeByID),
-    path('type-of-point/add/', postType),
+    path('points/types/<int:pk>/', getTypeByID),
+    path('points/types/add/', postType),
 ]

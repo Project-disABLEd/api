@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 from os import path
+import random
+import string
 from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -35,12 +37,25 @@ else:
     SECRET_KEY_FILE.close()
 
 # secret key for token decode
+def generateTokenKey():
+    s=''
+    for x in range(0, 50):
+        s+=random.choice(string.ascii_lowercase)
+    return s
+
 if os.path.exists("./api_project/secret_key_token.txt"): 
     SECRET_KEY_TOKEN_FILE = open("./api_project/secret_key_token.txt", "r")
     SECRET_KEY_TOKEN = SECRET_KEY_TOKEN_FILE.read()
     SECRET_KEY_TOKEN_FILE.close()
 else:
-    print('ERROR: no secret_key_token.txt')
+    SECRET_KEY_FILE = open("./api_project/secret_key_token.txt", "w+")
+    SECRET_KEY_FILE.write(generateTokenKey())
+    SECRET_KEY_FILE.close()
+    SECRET_KEY_FILE = open("./api_project/secret_key_token.txt", "r")
+    SECRET_KEY = SECRET_KEY_FILE.read()
+    SECRET_KEY_FILE.close()
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

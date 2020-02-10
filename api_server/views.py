@@ -11,17 +11,10 @@ def getByPos(request, format=None):
         x=request.GET.get('x')
         y=request.GET.get('y')
 
-        # -------------if is no parameters trow all models------------------
+        # if is no parameters trow all models
         if x==None and y==None:
-            try:
-                points = Point.objects.all()
-            except Point.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
-
-            serializer = PointSerializer(points, many=True)
-                
-            return Response(serializer.data)
-        #-------------------------------------------------------------------
+            return getAllPoints()
+       
 
         points = Point.objects.get(latitude=x,longitude=y)
 
@@ -31,6 +24,16 @@ def getByPos(request, format=None):
     serializer = PointSerializer(points)
 
     return Response(serializer.data)
+
+def getAllPoints():
+        try:
+            points = Point.objects.all()
+        except Point.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        serializer = PointSerializer(points, many=True)
+                
+        return Response(serializer.data)
 
 @api_view(['GET'])
 def getByID(request, pk, format=None):
