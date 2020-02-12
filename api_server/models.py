@@ -5,7 +5,8 @@ class Point(models.Model):
     created = models.DateTimeField(auto_now_add=True) # Auto-created, returns date of creation
     ID = models.AutoField(verbose_name='ID', primary_key=True, auto_created=True) # Auto-generated ID
     name = models.CharField(max_length=100) # Name of the place, required
-    source = models.TextField(max_length=100) # Source from which the data was taken (Manual, OpenStreetMap/WheelMap/accessibility.cloud, Town Hall), required
+    source = models.TextField(max_length=100) # Source from which the data was taken (Manual,
+                                              # OpenStreetMap/WheelMap/accessibility.cloud, Town Hall), required
     desc = models.TextField(blank=True, default='') # Description of the place, optional
     site = models.TextField(blank=True, default='', validators=[validate_url]) # WWW site of the place, optional
     address = models.TextField(blank=True, default='') # Address of the place, optional
@@ -58,4 +59,4 @@ class Point(models.Model):
         
 
 class TypeOfPoint(models.Model):
-    name=models.TextField(max_length=100)
+    name = models.TextField(max_length=100)

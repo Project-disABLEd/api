@@ -8,21 +8,18 @@ from api_server.permission import canCreatePoint
 @api_view(['GET'])
 def getByPos(request, format=None):
     try:
-        x=request.GET.get('x')
-        y=request.GET.get('y')
+        x = request.GET.get('x')
+        y = request.GET.get('y')
 
-        # if is no parameters trow all models
-        if x==None and y==None:
+        # If no parameters are given, throw all models
+        if x == None and y == None:
             return getAllPoints()
        
-
         points = Point.objects.get(latitude=x,longitude=y)
-
     except Point.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     serializer = PointSerializer(points)
-
     return Response(serializer.data)
 
 def getAllPoints():
@@ -32,7 +29,6 @@ def getAllPoints():
             return Response(status=status.HTTP_404_NOT_FOUND)
 
         serializer = PointSerializer(points, many=True)
-                
         return Response(serializer.data)
 
 @api_view(['GET'])
@@ -62,7 +58,7 @@ def getTypeByID(request, pk, format=None):
 @permission_classes([canCreatePoint])
 def postPoint(request, format=None):
 
-    serializer =  PointSerializerDetail(data=request.data, context={'request': request})
+    serializer = PointSerializerDetail(data=request.data, context={'request': request})
 
     if serializer.is_valid():
         serializer.save()
@@ -73,7 +69,7 @@ def postPoint(request, format=None):
 @permission_classes([canCreatePoint])
 def postType(request, format=None):
 
-    serializer =  TypeOfPointSerializer(data=request.data, context={'request': request})
+    serializer = TypeOfPointSerializer(data=request.data, context={'request': request})
 
     if serializer.is_valid():
         serializer.save()

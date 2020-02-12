@@ -5,8 +5,7 @@ class PointSerializerDetail(serializers.ModelSerializer):
     class Meta:
         model = Point
         ##fields = dir(Point)
-        fields = [
-            'created',
+        fields = ['created',
             'ID',
             'name',
             'source',
@@ -33,18 +32,15 @@ class PointSerializerDetail(serializers.ModelSerializer):
             'mental_disorder_desc',
             'staff',
             'staff_desc',
-            'typeObj'
-            ]
+            'typeObj']
         
 class PointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Point
-        fields = [
-            'ID',
+        fields = ['ID',
             'name',
             'latitude',
-            'longitude'
-            ]
+            'longitude']
 
 class TypeOfPointSerializer(serializers.ModelSerializer):
     class Meta:
