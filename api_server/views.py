@@ -4,6 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from api_server.models import Point , TypeOfPoint
 from api_server.serializers import PointSerializerDetail, TypeOfPointSerializer, PointSerializer
 from api_server.permission import canCreatePoint
+from django.db.models import Q
 
 @api_view(['GET'])
 def getByPos(request):
@@ -41,6 +42,21 @@ def getByID(request, pk):
     return Response(serializer.data)
 
 @api_view(['GET'])
+def getByRange(request):
+    try:
+        x1 = request.GET['x1']
+        x2 = request.GET['x2']
+        y1 = request.GET['y1']
+        y2 = request.GET['y2']
+
+        points = Point.objects.filter((Q(latitude__lte=x1)&Q(latitude__gte=x2))&(Q(longitude__lte=y1)&Q(longitude__gte=y2)))
+    except Point.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PointSerializer(points, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
 def getTypeByID(request, pk):
     try:
         types = TypeOfPoint.objects.get(pk=pk)
@@ -49,6 +65,8 @@ def getTypeByID(request, pk):
 
     serializer = TypeOfPointSerializer(types)
     return Response(serializer.data)
+
+# -----------POST------------
 
 @api_view(['POST'])
 @permission_classes([canCreatePoint])
