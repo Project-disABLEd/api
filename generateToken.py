@@ -8,5 +8,3 @@ SECRET_KEY_TOKEN_FILE.close()
 
 token = jwt.encode({'key': 'value'}, SECRET_KEY_TOKEN, algorithm='HS256')
 print(token)
-
-os.system("pause")

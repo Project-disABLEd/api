@@ -50,6 +50,7 @@
     <Compile Include="api_server\tests.py" />
     <Compile Include="api_server\views.py" />
     <Compile Include="api_server\__init__.py" />
+    <Compile Include="generateToken.py" />
     <Compile Include="manage.py" />
   </ItemGroup>
   <ItemGroup>
