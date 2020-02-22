@@ -13,7 +13,10 @@ jobs:
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+      - image: circleci/postgres:9.6-alpine
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: disabled 
 
     working_directory: ~/repo
 
@@ -34,6 +37,17 @@ jobs:
             . venv/bin/activate
             pip install -r requirements.txt
 
+      - run:
+          name: Waiting for Postgres to be ready
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgres && exit 1
+      
       - save_cache:
           paths:
             - ./venv
@@ -45,6 +59,21 @@ jobs:
             . venv/bin/activate
             python manage.py makemigrations api_server
             python manage.py migrate
+
+      - run:
+          name: Start service
+          environment:
+            CONTACTS_DB_URL: "postgres://circleci-demo-go@localhost:5432/circle_test?sslmode=disable"
+          command: |
+            . venv/bin/activate 
+            python manage.py runserver
+          background: true
+
+      - run:
+          name: Validate service is working
+          command: |
+            sleep 5
+            curl --retry 10 --retry-delay 1 -X POST --header "Content-Type: application/json" -d '{"name":"Test place", "desc": "Test desc" ,"address":"Test", "latitude": 0.000000, "longitude": 0.000000}' http://localhost:8000/points
 
       # run tests!
       # this example uses Django's built-in test-runner
@@ -59,5 +88,8 @@ jobs:
             python manage.py test
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: /tmp/test-results
+          destination: raw-test-output
+
+      - store_test_results:
+          path: /tmp/test-results

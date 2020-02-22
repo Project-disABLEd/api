@@ -110,6 +110,7 @@ venv.bak/
 # Keys that we don't want to get leaked
 api_project/secret_key.txt
 api_project/secret_key_token.txt
+api_project/pass.txt
 
 # VS Code
 .vscode/
