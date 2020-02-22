@@ -12,5 +12,5 @@ class canCreatePoint(permissions.BasePermission):
             jwt.decode(token, settings.SECRET_KEY_TOKEN, algorithms=['HS256'])
         except (JWTError,KeyError):
             return False
-        else: 
+        else:
             return True
