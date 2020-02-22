@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4489f40d-7a1d-41a5-8600-154f1e38d8f1}</ProjectGuid>
+    <ProjectGuid>{e3a3b2a1-ff80-4299-bac9-8d9df3d494b6}</ProjectGuid>
     <ProjectHome />
     <StartupFile>manage.py</StartupFile>
     <SearchPath />
@@ -16,7 +16,10 @@
     <DjangoSettingsModule>api_project.settings</DjangoSettingsModule>
     <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
     <SuppressConfigureTestFrameworkPrompt>true</SuppressConfigureTestFrameworkPrompt>
-    <Name>api</Name>
+    <PythonDebugWebServerCommandArguments>runserver</PythonDebugWebServerCommandArguments>
+    <PythonRunWebServerCommandType />
+    <PythonDebugWebServerCommandType />
+    <PythonRunWebServerCommandArguments>runserver</PythonRunWebServerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
@@ -25,7 +28,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
-    <Content Include="Templates\Mapa.html" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api_project\settings.py" />
@@ -35,16 +37,25 @@
     <Compile Include="api_server\admin.py" />
     <Compile Include="api_server\apps.py" />
     <Compile Include="api_server\models.py" />
+    <Compile Include="api_server\validators.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="api_server\permission.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="api_server\urls.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="api_server\serializers.py" />
     <Compile Include="api_server\tests.py" />
     <Compile Include="api_server\views.py" />
     <Compile Include="api_server\__init__.py" />
+    <Compile Include="generateToken.py" />
     <Compile Include="manage.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="api_project" />
     <Folder Include="api_server" />
-    <Folder Include="Templates" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.Django.targets" />
   <ProjectExtensions>
