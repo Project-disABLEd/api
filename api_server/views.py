@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from api_server.models import Point , TypeOfPoint
-from api_server.serializers import PointSerializerDetail , TypeOfPointSerializer, PointSerializer
+from api_server.serializers import PointSerializerDetail, TypeOfPointSerializer, PointSerializer
 from api_server.permission import canCreatePoint
 
 @api_view(['GET'])
