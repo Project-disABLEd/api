@@ -5,24 +5,25 @@ from api_server.models import Point , TypeOfPoint
 from api_server.serializers import PointSerializerDetail, TypeOfPointSerializer, PointSerializer
 from api_server.permission import canCreatePoint
 from django.db.models import Q
+from django.utils.datastructures import MultiValueDictKeyError
 
 @api_view(['GET'])
 def getByPos(request):
     try:
-        x = request.GET.get('x')
-        y = request.GET.get('y')
+        x = request.GET['x']
+        y = request.GET['y']
 
-        # If no parameters are given, throw all models
-        if x is None and y is None:
-            return getAllPoints()
         points = Point.objects.get(latitude=x,longitude=y)
     except Point.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    except MultiValueDictKeyError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     serializer = PointSerializer(points)
     return Response(serializer.data)
 
-def getAllPoints():
+@api_view(['GET'])
+def getAll():
         try:
             points = Point.objects.all()
         except Point.DoesNotExist:
@@ -52,6 +53,8 @@ def getByRange(request):
         points = Point.objects.filter((Q(latitude__lte=x1)&Q(latitude__gte=x2))&(Q(longitude__lte=y1)&Q(longitude__gte=y2)))
     except Point.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+    except MultiValueDictKeyError:
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     serializer = PointSerializer(points, many=True)
     return Response(serializer.data)
