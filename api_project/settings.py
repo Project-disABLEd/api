@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Function for reading or generating keys
 def getKey(path):
-    if os.path.exists(path): 
+    if os.path.exists(path):
         FILE = open(path, "r")
         TOKEN = FILE.read()
         FILE.close()

@@ -1,5 +1,5 @@
 from django.urls import include, path
-from api_server import views, urls as apiUrls
+from api_server import urls as apiUrls
 
 
 # Wire up our API using automatic URL routing.

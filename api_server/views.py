@@ -40,19 +40,16 @@ def getByID(request, pk, format=None):
 
     serializer = PointSerializerDetail(points)
     return Response(serializer.data)
-   
 
 @api_view(['GET'])
 def getTypeByID(request, pk, format=None):
     try:
-        type = TypeOfPoint.objects.get(pk=pk)
+        types = TypeOfPoint.objects.get(pk=pk)
     except TypeOfPoint.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = TypeOfPointSerializer(type)
+    serializer = TypeOfPointSerializer(types)
     return Response(serializer.data)
-
-
 
 @api_view(['POST'])
 @permission_classes([canCreatePoint])

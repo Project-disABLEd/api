@@ -33,7 +33,7 @@ class PointSerializerDetail(serializers.ModelSerializer):
             'staff',
             'staff_desc',
             'typeObj']
-        
+
 class PointSerializer(serializers.ModelSerializer):
     class Meta:
         model = Point
