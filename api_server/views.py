@@ -12,7 +12,7 @@ def getByPos(request):
         y = request.GET.get('y')
 
         # If no parameters are given, throw all models
-        if x == None and y == None:
+        if x is None and y is None:
             return getAllPoints()
         points = Point.objects.get(latitude=x,longitude=y)
     except Point.DoesNotExist:
