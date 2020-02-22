@@ -1,19 +1,17 @@
 from rest_framework import serializers
-from api_server.models import Point
+from api_server.models import Point, TypeOfPoint
 
-class PointSerializer(serializers.ModelSerializer):
+class PointSerializerDetail(serializers.ModelSerializer):
     class Meta:
         model = Point
         ##fields = dir(Point)
-        fields = [
-            'created',
+        fields = ['created',
             'ID',
             'name',
             'source',
             'desc',
             'site',
             'address',
-            'latitude',
             'latitude',
             'longitude',
             'wheelchair_accessibility',
@@ -33,5 +31,18 @@ class PointSerializer(serializers.ModelSerializer):
             'mental_disorder',
             'mental_disorder_desc',
             'staff',
-            'staff_desc'
-            ]
+            'staff_desc',
+            'typeObj']
+
+class PointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Point
+        fields = ['ID',
+            'name',
+            'latitude',
+            'longitude']
+
+class TypeOfPointSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TypeOfPoint
+        fields = ['name']
