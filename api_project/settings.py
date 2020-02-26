@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from os import path
 from django.core.management.utils import get_random_secret_key
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,7 +40,7 @@ SECRET_KEY_TOKEN = getKey('./api_project/secret_key_token.txt') # Key for token 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 # Application definition
 INSTALLED_APPS = ['django.contrib.admin',
@@ -92,23 +91,10 @@ REST_FRAMEWORK = {
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-# Password for the DB, will set the password to None if there isn't a file already (for CircleCI tests)
-if os.path.exists("./api_project/pass.txt"): # Need more efficient method, ok for now. TODO
-    PASS_FILE = open("./api_project/pass.txt", "r")
-    PASS = PASS_FILE.read()
-    PASS_FILE.close()
-else:
-    PASS = None
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'disabled',
-        'USER': 'postgres',
-        'PASSWORD': PASS,
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -144,30 +130,3 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.normpath(os.path.join(BASE_DIR, 'assets'))
-STATICFILES_DIRS = (
-    ('assets', 'static'),
-
-    )
-
-# Logging
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
-        },
-    },
-}
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api_project.settings")
-
-django_heroku.settings(locals())
