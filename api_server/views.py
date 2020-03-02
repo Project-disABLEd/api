@@ -98,6 +98,22 @@ def postPoint(request):
 
 @api_view(['POST'])
 @permission_classes([canCreatePoint])
+def editPoint(request, pk):
+
+    try:
+        points = Point.objects.get(pk=pk)
+    except Point.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = PointSerializerDetail(points, data=request.data, context={'request': request})
+
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([canCreatePoint])
 def postType(request):
 
     serializer = TypeOfPointSerializer(data=request.data, context={'request': request})
@@ -106,3 +122,43 @@ def postType(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['POST'])
+@permission_classes([canCreatePoint])
+def editType(request, pk):
+
+    try:
+        types = TypeOfPoint.objects.get(pk=pk)
+    except TypeOfPoint.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer =  TypeOfPointSerializer(types,data=request.data, context={'request': request})
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#-----------------------DELETE------------------------
+@api_view(['DELETE'])
+@permission_classes([canCreatePoint])
+def delPoint(request, pk):
+
+    try:
+        points = Point.objects.get(pk=pk)
+    except Point.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    points.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['DELETE'])
+@permission_classes([canCreatePoint])
+def delType(request, pk):
+
+    try:
+        types = TypeOfPoint.objects.get(pk=pk)
+    except TypeOfPoint.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    types.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
