@@ -96,7 +96,7 @@ def postPoint(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['PATCH'])
 @permission_classes([canCreatePoint])
 def editPoint(request, pk):
 
@@ -105,11 +105,11 @@ def editPoint(request, pk):
     except Point.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = PointSerializerDetail(points, data=request.data, context={'request': request})
+    serializer = PointSerializerDetail(points, data=request.data, context={'request': request}, partial=True)
 
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
@@ -123,7 +123,7 @@ def postType(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['PATCH'])
 @permission_classes([canCreatePoint])
 def editType(request, pk):
 
@@ -132,10 +132,10 @@ def editType(request, pk):
     except TypeOfPoint.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer =  TypeOfPointSerializer(types,data=request.data, context={'request': request})
+    serializer =  TypeOfPointSerializer(types,data=request.data, context={'request': request}, partial=True)
     if serializer.is_valid():
         serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 #-----------------------DELETE------------------------
