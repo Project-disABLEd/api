@@ -60,6 +60,7 @@ jobs:
             . venv/bin/activate
             python manage.py test
             coverage run --source='./api_project','./api_server' manage.py test api_server
+            coverage xml
           
       - codecov/upload:
-          file: ./.coverage
+          file: ./coverage.xml
