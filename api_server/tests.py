@@ -13,7 +13,7 @@ def Auth(self):
         SECRET_KEY_TOKEN = SECRET_KEY_TOKEN_FILE.read()
         SECRET_KEY_TOKEN_FILE.close()
         token = jwt.encode({'key': 'value'}, SECRET_KEY_TOKEN, algorithm='HS256')
-        
+
         return 'Bearer ' + token
 
 class PostTest(TestCase):
@@ -70,7 +70,7 @@ class GetTest(TestCase):
         objects = Point.objects.all()
         serializer = PointSerializer(objects, many=True)
 
-        self.assertEqual(response.status_code, self.requreStatus) 
+        self.assertEqual(response.status_code, self.requreStatus)
         self.assertEqual(response.data, serializer.data)
 
     def testGetPointByPos(self):
@@ -90,7 +90,7 @@ class GetTest(TestCase):
         objects = Point.objects.filter(Q(name__contains=self.phrase) or Q(desc__contains=self.phrase) or Q(site__contains=self.phrase) or Q(address__contains=self.phrase))
         serializer = PointSerializer(objects, many=True)
 
-        self.assertEqual(response.status_code, self.requreStatus) 
+        self.assertEqual(response.status_code, self.requreStatus)
         self.assertEqual(response.data, serializer.data)
 
     def testGetPointByRange(self):
