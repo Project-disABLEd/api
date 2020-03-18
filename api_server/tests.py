@@ -47,7 +47,7 @@ class PostTest(TestCase):
         response = self.client.post(url, self.dataPoint, HTTP_AUTHORIZATION=self.token)
 
         self.assertEqual(response.status_code, self.requreStatus)
-   
+
 
 class GetTest(TestCase):
 
@@ -100,7 +100,7 @@ class GetTest(TestCase):
         objects = Point.objects.filter((Q(latitude__lte=self.x+1) & Q(latitude__gte=self.x-1)) & (Q(longitude__lte=self.y+1) & Q(longitude__gte=self.y-1)))
         serializer = PointSerializer(objects, many=True)
 
-        self.assertEqual(response.status_code, self.requreStatus) 
+        self.assertEqual(response.status_code, self.requreStatus)
         self.assertEqual(response.data, serializer.data)
 
     def testGetPointByID(self):
