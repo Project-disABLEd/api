@@ -80,7 +80,7 @@ class GetTest(TestCase):
         objects = Point.objects.get(latitude=self.x,longitude=self.y)
         serializer = PointSerializer(objects)
 
-        self.assertEqual(response.status_code, self.requreStatus) 
+        self.assertEqual(response.status_code, self.requreStatus)
         self.assertEqual(response.data, serializer.data)
 
     def testGetPointByPhrase(self):
