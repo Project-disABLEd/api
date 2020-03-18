@@ -53,16 +53,14 @@ jobs:
       # other common Python testing frameworks include pytest and nose
       # https://pytest.org
       # https://nose.readthedocs.io
-
+      
       - run:
           name: Run tests
           command: |
             . venv/bin/activate
             python manage.py test
-
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
-
+            coverage run --source='./api_project','./api_server' manage.py test api_server
+            coverage xml
+          
       - codecov/upload:
-          file: {{ coverage_report_filepath }}
+          file: ./coverage.xml
