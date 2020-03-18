@@ -76,7 +76,7 @@ class GetTest(TestCase):
     def testGetPointByPos(self):
         url = '/api/points/pos/'
         response = self.client.get(url, {'x': self.x, 'y': self.y})
-        
+
         objects = Point.objects.get(latitude=self.x,longitude=self.y)
         serializer = PointSerializer(objects)
 
@@ -102,7 +102,6 @@ class GetTest(TestCase):
 
         self.assertEqual(response.status_code, self.requreStatus) 
         self.assertEqual(response.data, serializer.data)
-
 
     def testGetPointByID(self):
         url = '/api/points/'+str(self.PointId)+'/'
