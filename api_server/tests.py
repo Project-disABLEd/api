@@ -1,8 +1,7 @@
 from jose import jwt
 
-from rest_framework.test import APITestCase
 from rest_framework import status
-from django.test import TestCase, Client
+from django.test import TestCase
 from django.db.models import Q
 
 from api_server.models import Point , TypeOfPoint
@@ -59,7 +58,7 @@ class GetTest(TestCase):
 
         self.requreStatus = status.HTTP_200_OK
 
-    def testGetAllPoints(self):  
+    def testGetAllPoints(self):
         url = '/api/points/'
         response = self.client.get(url)
 
@@ -69,7 +68,7 @@ class GetTest(TestCase):
         self.assertEqual(response.status_code, self.requreStatus) 
         self.assertEqual(response.data, serializer.data)
 
-    def testGetPointByPos(self): 
+    def testGetPointByPos(self):
         url = '/api/points/pos/'
         x = 1
         y = 1
@@ -123,7 +122,7 @@ class GetTest(TestCase):
         self.assertEqual(response.data, serializer.data)
 
 
-    def testGetPointByID(self):
+    def testGetTypeByID(self):
         id = 1
         url = '/api/points/types/'+str(id)+'/'
 
@@ -132,7 +131,7 @@ class GetTest(TestCase):
         objects = TypeOfPoint.objects.get(pk=id)
         serializer = TypeOfPointSerializer(objects)
 
-        self.assertEqual(response.status_code, self.requreStatus) 
+        self.assertEqual(response.status_code, self.requreStatus)
         self.assertEqual(response.data, serializer.data)
 
 
@@ -169,7 +168,7 @@ class PatchTest(TestCase):
 
         response = self.client.patch(url, self.dataPoint, content_type='application/json', HTTP_AUTHORIZATION=self.token)
         self.assertEqual(response.status_code, self.requreStatus)
-   
+
 
 class DeleteTest(TestCase):
 
