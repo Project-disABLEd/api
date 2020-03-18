@@ -37,24 +37,29 @@ class PostTest(TestCase):
 
     def testPostType(self):
         url = '/api/points/types/add/'
-
         response = self.client.post(url, self.dataType, HTTP_AUTHORIZATION=self.token)
+
         self.assertEqual(response.status_code, self.requreStatus)
 
 
     def testPostPoint(self):
         url = '/api/points/add/'
-
         response = self.client.post(url, self.dataPoint, HTTP_AUTHORIZATION=self.token)
+
         self.assertEqual(response.status_code, self.requreStatus)
    
 
 class GetTest(TestCase):
 
     def setUp(self):
+        self.TypeId = 1
+        self.PointId = 1
+        self.x = 1
+        self.y = 1
+        self.phrase = "t"
 
-        type = TypeOfPoint.objects.create(name="test")
-        Point.objects.create(name="test", source='test', latitude=1, longitude=1, typeObj=type)
+        self.type = TypeOfPoint.objects.create(name="test")
+        Point.objects.create(name="test", source='test', latitude=self.x, longitude=self.y, typeObj=self.type)
 
         self.requreStatus = status.HTTP_200_OK
 
@@ -70,12 +75,9 @@ class GetTest(TestCase):
 
     def testGetPointByPos(self):
         url = '/api/points/pos/'
-        x = 1
-        y = 1
-
-        response = self.client.get(url, {'x': x, 'y': y})
+        response = self.client.get(url, {'x': self.x, 'y': self.y})
         
-        objects = Point.objects.get(latitude=x,longitude=y)
+        objects = Point.objects.get(latitude=self.x,longitude=self.y)
         serializer = PointSerializer(objects)
 
         self.assertEqual(response.status_code, self.requreStatus) 
@@ -83,11 +85,9 @@ class GetTest(TestCase):
     
     def testGetPointByPhrase(self):
         url = '/api/points/search/'
-        phrase = "t"
+        response = self.client.get(url, {'phrase': self.phrase})
 
-        response = self.client.get(url, {'phrase': phrase})
-
-        objects = Point.objects.filter(Q(name__contains=phrase) or Q(desc__contains=phrase) or Q(site__contains=phrase) or Q(address__contains=phrase))
+        objects = Point.objects.filter(Q(name__contains=self.phrase) or Q(desc__contains=self.phrase) or Q(site__contains=self.phrase) or Q(address__contains=self.phrase))
         serializer = PointSerializer(objects, many=True)
 
         self.assertEqual(response.status_code, self.requreStatus) 
@@ -95,14 +95,9 @@ class GetTest(TestCase):
 
     def testGetPointByRange(self):
         url = '/api/points/range/'
-        x1 = 1
-        x2 = -1
-        y1 = 1
-        y2 = -1
+        response = self.client.get(url, {'x1': self.x+1, 'y1': self.y+1, 'x2': self.x-1, 'y2': self.y-1})
 
-        response = self.client.get(url, {'x1': x1, 'y1': y1, 'x2': x2, 'y2': y2})
-
-        objects = Point.objects.filter((Q(latitude__lte=x1) & Q(latitude__gte=x2)) & (Q(longitude__lte=y1) & Q(longitude__gte=y2)))
+        objects = Point.objects.filter((Q(latitude__lte=self.x+1) & Q(latitude__gte=self.x-1)) & (Q(longitude__lte=self.y+1) & Q(longitude__gte=self.y-1)))
         serializer = PointSerializer(objects, many=True)
 
         self.assertEqual(response.status_code, self.requreStatus) 
@@ -110,12 +105,10 @@ class GetTest(TestCase):
 
 
     def testGetPointByID(self):
-        id = 1
-        url = '/api/points/'+str(id)+'/'
-
+        url = '/api/points/'+str(self.PointId)+'/'
         response = self.client.get(url)
 
-        objects = Point.objects.get(pk=id)
+        objects = Point.objects.get(pk=self.PointId)
         serializer = PointSerializerDetail(objects)
 
         self.assertEqual(response.status_code, self.requreStatus) 
@@ -123,12 +116,10 @@ class GetTest(TestCase):
 
 
     def testGetTypeByID(self):
-        id = 1
-        url = '/api/points/types/'+str(id)+'/'
-
+        url = '/api/points/types/'+str(self.TypeId)+'/'
         response = self.client.get(url)
 
-        objects = TypeOfPoint.objects.get(pk=id)
+        objects = TypeOfPoint.objects.get(pk=self.TypeId)
         serializer = TypeOfPointSerializer(objects)
 
         self.assertEqual(response.status_code, self.requreStatus)
@@ -138,9 +129,10 @@ class GetTest(TestCase):
 class PatchTest(TestCase):
 
     def setUp(self):
-
-        type = TypeOfPoint.objects.create(name="test")
-        Point.objects.create(name="test", source='test', latitude=1, longitude=1, typeObj=type)
+        self.TypeId = 1
+        self.PointId = 1
+        self.type = TypeOfPoint.objects.create(name="test")
+        Point.objects.create(name="test", source='test', latitude=1, longitude=1, typeObj=self.type)
 
         self.dataType = {
             'name': 'test2'
@@ -155,42 +147,39 @@ class PatchTest(TestCase):
         self.token = Auth(self)
 
     def testPatchType(self):
-        id = 1
-        url = '/api/points/types/edit/'+str(id)+'/'
-
+        url = '/api/points/types/edit/'+str(self.TypeId)+'/'
         response = self.client.patch(url, self.dataType, content_type='application/json', HTTP_AUTHORIZATION=self.token)
+
         self.assertEqual(response.status_code, self.requreStatus)
 
 
     def testPatchPoint(self):
-        id = 1
-        url = '/api/points/edit/'+str(id)+'/'
-
+        url = '/api/points/edit/'+str(self.PointId)+'/'
         response = self.client.patch(url, self.dataPoint, content_type='application/json', HTTP_AUTHORIZATION=self.token)
+
         self.assertEqual(response.status_code, self.requreStatus)
 
 
 class DeleteTest(TestCase):
 
     def setUp(self):
+        self.TypeId = 1
+        self.PointId = 1
 
-        type = TypeOfPoint.objects.create(name="test")
-        Point.objects.create(name="test", source='test', latitude=1, longitude=1, typeObj=type)
+        self.type = TypeOfPoint.objects.create(name="test")
+        Point.objects.create(name="test", source='test', latitude=1, longitude=1, typeObj=self.type)
 
         self.requreStatus = status.HTTP_204_NO_CONTENT
         self.token = Auth(self)
 
     def testDelType(self):
-        id = 1
-        url = '/api/points/types/del/'+str(id)+'/'
-
+        url = '/api/points/types/del/'+str(self.TypeId)+'/'
         response = self.client.delete(url, HTTP_AUTHORIZATION=self.token)
+
         self.assertEqual(response.status_code, self.requreStatus)
 
-
     def testDelPoint(self):
-        id = 1
-        url = '/api/points/del/'+str(id)+'/'
-
+        url = '/api/points/del/'+str(self.PointId)+'/'
         response = self.client.delete(url, HTTP_AUTHORIZATION=self.token)
+
         self.assertEqual(response.status_code, self.requreStatus)
