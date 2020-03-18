@@ -82,7 +82,7 @@ class GetTest(TestCase):
 
         self.assertEqual(response.status_code, self.requreStatus) 
         self.assertEqual(response.data, serializer.data)
-    
+
     def testGetPointByPhrase(self):
         url = '/api/points/search/'
         response = self.client.get(url, {'phrase': self.phrase})
@@ -111,7 +111,7 @@ class GetTest(TestCase):
         objects = Point.objects.get(pk=self.PointId)
         serializer = PointSerializerDetail(objects)
 
-        self.assertEqual(response.status_code, self.requreStatus) 
+        self.assertEqual(response.status_code, self.requreStatus)
         self.assertEqual(response.data, serializer.data)
 
 

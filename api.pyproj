@@ -27,6 +27,7 @@
     <VisualStudioVersion Condition=" '$(VisualStudioVersion)' == '' ">10.0</VisualStudioVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include=".circleci\config.yml" />
     <Content Include="requirements.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +55,7 @@
     <Compile Include="manage.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include=".circleci\" />
     <Folder Include="api_project" />
     <Folder Include="api_server" />
   </ItemGroup>
