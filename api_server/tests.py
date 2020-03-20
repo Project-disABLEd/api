@@ -4,7 +4,7 @@ from rest_framework import status
 from django.test import TestCase
 from django.db.models import Q
 
-from api_server.models import Point , TypeOfPoint
+from api_server.models import Point, TypeOfPoint
 from api_server.serializers import PointSerializerDetail, TypeOfPointSerializer, PointSerializer
 
 #-------Authorization-------
@@ -18,7 +18,7 @@ def Auth(self):
 
 class PostTest(TestCase):
     def setUp(self):
-        TypeOfPoint.objects.create(name="test")
+        TypeOfPoint.objects.create(name="test") # Create a type for point creation
 
         self.dataType = {
             'name': 'testType'
@@ -39,12 +39,52 @@ class PostTest(TestCase):
         response = self.client.post(url, self.dataType, HTTP_AUTHORIZATION=self.token)
 
         self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 2) # Setting it to 2 is necessary due to test DB reset before tests. (Initial type is required for the point creation)
 
     def testPostPoint(self):
         url = '/api/points/add/'
         response = self.client.post(url, self.dataPoint, HTTP_AUTHORIZATION=self.token)
 
         self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 1)
+
+    def testPostTypeNoToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        
+        url = '/api/points/types/add/'
+        response = self.client.post(url, self.dataType)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 1)
+
+    def testPostPointNoToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+
+        url = '/api/points/add/'
+        response = self.client.post(url, self.dataPoint)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 0)
+
+    def testPostTypeWrongToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        self.token = 'test'
+        
+        url = '/api/points/types/add/'
+        response = self.client.post(url, self.dataType, HTTP_AUTHORIZATION=self.token)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 1)
+
+    def testPostPointWrongToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        self.token = 'test'
+
+        url = '/api/points/add/'
+        response = self.client.post(url, self.dataPoint, HTTP_AUTHORIZATION=self.token)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 0)
 
 class GetTest(TestCase):
     def setUp(self):
@@ -150,6 +190,38 @@ class PatchTest(TestCase):
 
         self.assertEqual(response.status_code, self.requiredStatus)
 
+    def testPatchTypeNoToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        url = '/api/points/types/edit/'+str(self.TypeId)+'/'
+        response = self.client.patch(url, self.dataType, content_type='application/json')
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+
+    def testPatchPointNoToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        url = '/api/points/edit/'+str(self.PointId)+'/'
+        response = self.client.patch(url, self.dataPoint, content_type='application/json')
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+    
+    def testPatchTypeWrongToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        self.token = 'test'
+
+        url = '/api/points/types/edit/'+str(self.TypeId)+'/'
+        response = self.client.patch(url, self.dataType, content_type='application/json', HTTP_AUTHORIZATION=self.token)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+
+    def testPatchPointWrongToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        self.token = 'test'
+
+        url = '/api/points/edit/'+str(self.PointId)+'/'
+        response = self.client.patch(url, self.dataPoint, content_type='application/json', HTTP_AUTHORIZATION=self.token)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+
 class DeleteTest(TestCase):
     def setUp(self):
         self.TypeId = 1
@@ -166,9 +238,47 @@ class DeleteTest(TestCase):
         response = self.client.delete(url, HTTP_AUTHORIZATION=self.token)
 
         self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 0)
 
     def testDelPoint(self):
         url = '/api/points/del/'+str(self.PointId)+'/'
         response = self.client.delete(url, HTTP_AUTHORIZATION=self.token)
 
         self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 0)
+
+    def testDelTypeNoToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        url = '/api/points/types/del/'+str(self.TypeId)+'/'
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 1)
+
+    def testDelPointNoToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        url = '/api/points/del/'+str(self.PointId)+'/'
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 1)
+
+    def testDelTypeWrongToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        self.token = 'test'
+
+        url = '/api/points/types/del/'+str(self.TypeId)+'/'
+        response = self.client.delete(url, HTTP_AUTHORIZATION=self.token)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 1)
+
+    def testDelPointWrongToken(self):
+        self.requiredStatus = status.HTTP_403_FORBIDDEN
+        self.token = 'test'
+
+        url = '/api/points/del/'+str(self.PointId)+'/'
+        response = self.client.delete(url, HTTP_AUTHORIZATION=self.token)
+
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 1)
