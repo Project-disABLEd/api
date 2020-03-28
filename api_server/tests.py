@@ -46,7 +46,7 @@ class PostTest(TestCase):
         serializer = TypeOfPointSerializer(objects)
 
         self.assertEqual(response.status_code, self.requiredStatus)
-        self.assertEqual(TypeOfPoint.objects.count(), 2) 
+        self.assertEqual(TypeOfPoint.objects.count(), 2) # equal to 2 because one type is createn on setup
         self.assertEqual(serializer.data,response.data)
 
     def testPostPoint(self):
@@ -68,7 +68,7 @@ class PostTest(TestCase):
         response = self.client.post(url, self.dataType)
 
         self.assertEqual(response.status_code, self.requiredStatus)
-        self.assertEqual(TypeOfPoint.objects.count(), 1)
+        self.assertEqual(TypeOfPoint.objects.count(), 1) # equal to 1 because one type is createn on setup
 
     def testPostPointNoToken(self):
         self.requiredStatus = status.HTTP_403_FORBIDDEN
@@ -87,7 +87,7 @@ class PostTest(TestCase):
         response = self.client.post(url, self.dataType, HTTP_AUTHORIZATION=self.token)
 
         self.assertEqual(response.status_code, self.requiredStatus)
-        self.assertEqual(TypeOfPoint.objects.count(), 1)
+        self.assertEqual(TypeOfPoint.objects.count(), 1) # equal to 1 because one type is createn on setup
 
     def testPostPointWrongToken(self):
         self.requiredStatus = status.HTTP_403_FORBIDDEN
@@ -202,7 +202,7 @@ class PatchTest(TestCase):
         serializer = TypeOfPointSerializer(objects)
 
         self.assertEqual(response.status_code, self.requiredStatus)
-        self.assertEqual(TypeOfPoint.objects.count(), 1) 
+        self.assertEqual(TypeOfPoint.objects.count(), 1)
         self.assertEqual(serializer.data,response.data)
         self.assertNotEqual(serializerBefore.data,serializer.data)
 
@@ -217,7 +217,7 @@ class PatchTest(TestCase):
         serializer = PointSerializerDetail(objects)
 
         self.assertEqual(response.status_code, self.requiredStatus)
-        self.assertEqual(Point.objects.count(), 1) 
+        self.assertEqual(Point.objects.count(), 1)
         self.assertEqual(serializer.data,response.data)
         self.assertNotEqual(serializerBefore.data,serializer.data)
 
