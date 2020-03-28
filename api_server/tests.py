@@ -9,10 +9,10 @@ from api_server.serializers import PointSerializerDetail, TypeOfPointSerializer,
 
 #-------Authorization-------
 def Auth(self):
-    SECRET_KEY_TOKEN_FILE = open("./api_project/secret_key_token.txt", "r")
-    SECRET_KEY_TOKEN = SECRET_KEY_TOKEN_FILE.read()
-    SECRET_KEY_TOKEN_FILE.close()
-    token = jwt.encode({'key': 'value'}, SECRET_KEY_TOKEN, algorithm='HS256')
+    file = open("./api_project/secret_key_token.txt", "r")
+    secret = file.read()
+    file.close()
+    token = jwt.encode({'key': 'value'}, secret, algorithm='HS256')
 
     return 'Bearer ' + token
 
@@ -31,6 +31,10 @@ class PostTest(TestCase):
             'longitude': 1,
             'typeObj': 1
         }
+
+        self.PointId = 1
+        self.TypeId = 2
+
         self.requiredStatus = status.HTTP_201_CREATED
         self.token = Auth(self)
 
@@ -38,16 +42,25 @@ class PostTest(TestCase):
         url = '/api/points/types/add/'
         response = self.client.post(url, self.dataType, HTTP_AUTHORIZATION=self.token)
 
+        objects = TypeOfPoint.objects.get(pk=self.TypeId)
+        serializer = TypeOfPointSerializer(objects)
+
         self.assertEqual(response.status_code, self.requiredStatus)
-        self.assertEqual(TypeOfPoint.objects.count(), 2) # Setting it to 2 is necessary due to test DB reset before tests. (Initial type is required for the point creation)
+        self.assertEqual(TypeOfPoint.objects.count(), 2) 
+        self.assertEqual(serializer.data,response.data)
 
     def testPostPoint(self):
         url = '/api/points/add/'
         response = self.client.post(url, self.dataPoint, HTTP_AUTHORIZATION=self.token)
 
+        objects = Point.objects.get(pk=self.PointId)
+        serializer = PointSerializerDetail(objects)
+
         self.assertEqual(response.status_code, self.requiredStatus)
         self.assertEqual(Point.objects.count(), 1)
+        self.assertEqual(serializer.data,response.data)
 
+    #Wrong Auth
     def testPostTypeNoToken(self):
         self.requiredStatus = status.HTTP_403_FORBIDDEN
 
@@ -179,17 +192,36 @@ class PatchTest(TestCase):
         self.token = Auth(self)
 
     def testPatchType(self):
+        objects = TypeOfPoint.objects.get(pk=self.TypeId)
+        serializerBefore = TypeOfPointSerializer(objects)
+
         url = '/api/points/types/edit/'+str(self.TypeId)+'/'
         response = self.client.patch(url, self.dataType, content_type='application/json', HTTP_AUTHORIZATION=self.token)
 
+        objects = TypeOfPoint.objects.get(pk=self.TypeId)
+        serializer = TypeOfPointSerializer(objects)
+
         self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(TypeOfPoint.objects.count(), 1) 
+        self.assertEqual(serializer.data,response.data)
+        self.assertNotEqual(serializerBefore.data,serializer.data)
 
     def testPatchPoint(self):
+        objects = Point.objects.get(pk=self.PointId)
+        serializerBefore = PointSerializerDetail(objects)
+
         url = '/api/points/edit/'+str(self.PointId)+'/'
         response = self.client.patch(url, self.dataPoint, content_type='application/json', HTTP_AUTHORIZATION=self.token)
 
-        self.assertEqual(response.status_code, self.requiredStatus)
+        objects = Point.objects.get(pk=self.PointId)
+        serializer = PointSerializerDetail(objects)
 
+        self.assertEqual(response.status_code, self.requiredStatus)
+        self.assertEqual(Point.objects.count(), 1) 
+        self.assertEqual(serializer.data,response.data)
+        self.assertNotEqual(serializerBefore.data,serializer.data)
+
+    #Wrong Auth
     def testPatchTypeNoToken(self):
         self.requiredStatus = status.HTTP_403_FORBIDDEN
         url = '/api/points/types/edit/'+str(self.TypeId)+'/'
@@ -247,6 +279,7 @@ class DeleteTest(TestCase):
         self.assertEqual(response.status_code, self.requiredStatus)
         self.assertEqual(Point.objects.count(), 0)
 
+    #Wrong Auth
     def testDelTypeNoToken(self):
         self.requiredStatus = status.HTTP_403_FORBIDDEN
         url = '/api/points/types/del/'+str(self.TypeId)+'/'
